@@ -1,6 +1,6 @@
 use borsh::{BorshDeserialize, BorshSerialize};
 use crosstown_bus::{CrosstownBus, HandleError, MessageHandler};
-use std::{thread, time};
+use std::{env, thread, time};
 
 #[derive(Debug, Clone, BorshDeserialize, BorshSerialize)]
 pub struct UserCreatedEventMessage {
@@ -15,7 +15,7 @@ impl MessageHandler<UserCreatedEventMessage> for UserCreatedHandler {
         let _ten_millis = time::Duration::from_millis(1000);
         let now = time::Instant::now();
 
-        // std::thread::sleep(_ten_millis);
+        std::thread::sleep(_ten_millis);
 
         println!(
             "In Hanif's Computer [2406439854]. Message received: {:?}. Processed in {:?}",
@@ -27,8 +27,17 @@ impl MessageHandler<UserCreatedEventMessage> for UserCreatedHandler {
 }
 
 fn main() {
-    let listener =
-        CrosstownBus::new_queue_listener("amqp://guest:guest@localhost:5672".to_owned()).unwrap();
+    let amqp_url =
+        env::var("AMQP_URL").unwrap_or_else(|_| "amqp://guest:guest@localhost:5672".to_owned());
+    let listener = loop {
+        match CrosstownBus::new_queue_listener(amqp_url.clone()) {
+            Ok(listener) => break listener,
+            Err(error) => {
+                println!("Waiting for RabbitMQ at {amqp_url}: {error:?}");
+                thread::sleep(time::Duration::from_secs(2));
+            }
+        }
+    };
 
     _ = listener.listen(
         "user_created".to_owned(),
