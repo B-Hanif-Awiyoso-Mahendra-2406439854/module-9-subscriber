@@ -9,3 +9,7 @@ AMQP adalah singkatan dari Advanced Message Queuing Protocol. AMQP merupakan pro
 ### Apa arti `guest:guest@localhost:5672`?
 
 Pada `amqp://guest:guest@localhost:5672`, `guest` pertama adalah username, `guest` kedua adalah password, sedangkan `localhost:5672` menunjukkan bahwa RabbitMQ berjalan di komputer lokal pada port `5672`.
+
+## Simulation slow subscriber
+Pada simulasi ini, subscriber dibuat lebih lambat dengan menambahkan delay 1 detik saat memproses setiap message.
+![alt text](image.png)
