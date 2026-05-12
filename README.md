@@ -13,3 +13,9 @@ Pada `amqp://guest:guest@localhost:5672`, `guest` pertama adalah username, `gues
 ## Simulation slow subscriber
 Pada simulasi ini, subscriber dibuat lebih lambat dengan menambahkan delay 1 detik saat memproses setiap message.
 ![alt text](image.png)
+
+## Reflection and Running at Least Three Subscribers
+
+Pada percobaan ini, saya menjalankan tiga subscriber secara bersamaan menggunakan Docker Compose.
+![alt text](image-1.png)
+![alt text](image-2.png)
